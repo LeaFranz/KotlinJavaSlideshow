@@ -9,7 +9,7 @@ public class Slide{
     private String title = "";
     private String imageName = "";
     private String gps = "";
-    private int timestamp = 0;
+    private LocalDate timestamp;
     private String description="";
 
     public int getId() {
@@ -40,10 +40,10 @@ public class Slide{
         this.gps = gps;
     }
 
-    public int getTimestamp() {
+    public LocalDate getTimestamp() {
         return timestamp;
     }
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -58,4 +58,14 @@ public class Slide{
     public String toString(){
         return "Slide number " + this.id + " " + this.title;
     }
+
+    public Slide(int id, String title, String imageName, String gps, LocalDate timestamp, String description){
+        this.id = id;
+        this.title = title;
+        this.imageName = imageName;
+        this.gps = gps;
+        this.timestamp = timestamp;
+        this.description = description;
+    }
+
 }

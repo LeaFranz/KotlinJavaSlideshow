@@ -1,5 +1,7 @@
 package com.mobappdev.javaslideshow.service;
 
+import android.util.Log;
+
 import com.mobappdev.javaslideshow.model.Slide;
 
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.List;
 public class Slideshow{
 
     private List<Slide> slides = new ArrayList<>();
-    private String sortDirection = "asc";
+    public String sortDirection = "asc";
     private static Slideshow slideshow;
 
     public static Slideshow getInstance(){
@@ -38,9 +40,11 @@ public class Slideshow{
 
     public void sort(){
         if(sortDirection.equalsIgnoreCase("desc")){
-            Collections.sort(slides, Collections.<Slide>reverseOrder());
+            Collections.reverse(slides);
+            sortDirection="asc";
         }else if(sortDirection.equalsIgnoreCase("asc")){
             Collections.sort(slides, new SlideComperator());
+            sortDirection = "desc";
         }
     }
 
@@ -52,7 +56,7 @@ public class Slideshow{
 public class SlideComperator implements Comparator<Slide>{
     @Override
     public int compare(Slide o1, Slide o2) {
-        int value1 = o1.getTimestamp() - o2.getTimestamp();
+        int value1 = o1.getTimestamp().compareTo(o2.getTimestamp());
         if (value1 == 0) {
             int value2 = o1.getTitle().compareTo(o2.getTitle());
             if (value2 == 0) {
