@@ -11,30 +11,53 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobappdev.javaslideshow.Observer.ObservedObject;
+import com.mobappdev.javaslideshow.Observer.SlideLogger;
 import com.mobappdev.javaslideshow.service.Slideshow;
 import com.mobappdev.javaslideshow.model.Slide;
 
 import java.time.LocalDate;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     //TODO: observable
-    private int currentSlideId;
+    public int currentSlideId = 0;
+    public MainActivity(int id) {
+        this.currentSlideId = id;
+    }
+
+    public MainActivity(){
+
+    }
 
     private Slideshow holidaySlides = Slideshow.getInstance();
+    private SlideLogger logger = new SlideLogger();
     private int totalSlides = 0;
     private int maxSlides = 4;
     private ImageView imageView;
     SharedPref sharedP = new SharedPref();
-
+    ObservedObject watched;
+    MainActivity watcher;
+    TextView slideNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // create watched and watcher objects
+        watched = new ObservedObject(0);
+        // watcher object listens to object change
+        watcher = new MainActivity(0);
+        watched.addObserver(watcher);
+
         //difference: i have to manually get the context for the shared prefs
         final Context context = getApplicationContext();
         totalSlides = holidaySlides.getTotalSlides();
+        slideNo = (TextView)findViewById(R.id.slideNo);
 
         if(totalSlides != maxSlides){
             addDemoSlides();
@@ -82,7 +105,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showNextSlide(){
+        watched.setValue(currentSlideId);
         currentSlideId++;
+        if(watched.hasChanged()){
+            slideNo.setText("");
+        }else{
+            slideNo.setText(currentSlideId);
+        }
         //difference: longer if
         if(currentSlideId == totalSlides){
             currentSlideId = 0;
@@ -143,4 +172,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+    }
 }
