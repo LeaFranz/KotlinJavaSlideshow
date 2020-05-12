@@ -2,8 +2,6 @@ package com.mobappdev.javaslideshow.service;
 
 import android.util.Log;
 
-import com.mobappdev.javaslideshow.Observer.ISlideShow;
-import com.mobappdev.javaslideshow.Observer.SlideChangeListener;
 import com.mobappdev.javaslideshow.model.Slide;
 
 import java.util.ArrayList;
@@ -11,22 +9,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Slideshow implements ISlideShow {
+public class Slideshow {
 
     private List<Slide> slides = new ArrayList<>();
     public String sortDirection = "asc";
     private static Slideshow slideshow;
-    private SlideChangeListener listener;
 
     public static Slideshow getInstance(){
         if(Slideshow.slideshow == null){
             Slideshow.slideshow = new Slideshow();
         }
         return Slideshow.slideshow;
-    }
-
-    public void collectSlidecounter(){
-        notifyObservers();
     }
 
     public void addSlide(Slide newSlide){
@@ -38,8 +31,11 @@ public class Slideshow implements ISlideShow {
     }
 
     public Slide next(int counter){
-
-        return slides.get(counter);
+        if(counter < slides.size()){
+            return slides.get(counter);
+        }else{
+            return slides.get(1);
+        }
     }
 
     public int getTotalSlides(){
@@ -59,21 +55,6 @@ public class Slideshow implements ISlideShow {
     @Override
     public String toString (){
         return "";
-    }
-
-    @Override
-    public void attach(SlideChangeListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void remove(SlideChangeListener listener) {
-        this.listener = null;
-    }
-
-    @Override
-    public void notifyObservers() {
-        listener.slideDataChanged();
     }
 
     public class SlideComperator implements Comparator<Slide>{

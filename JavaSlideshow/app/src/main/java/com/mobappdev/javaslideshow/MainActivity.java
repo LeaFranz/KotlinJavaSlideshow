@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobappdev.javaslideshow.Observer.ObservedObject;
-import com.mobappdev.javaslideshow.Observer.SlideLogger;
 import com.mobappdev.javaslideshow.service.Slideshow;
 import com.mobappdev.javaslideshow.model.Slide;
 
@@ -33,14 +32,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private Slideshow holidaySlides = Slideshow.getInstance();
-    private SlideLogger logger = new SlideLogger();
     private int totalSlides = 0;
     private int maxSlides = 4;
     private ImageView imageView;
     SharedPref sharedP = new SharedPref();
     ObservedObject watched;
     MainActivity watcher;
-    TextView slideNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         //difference: i have to manually get the context for the shared prefs
         final Context context = getApplicationContext();
         totalSlides = holidaySlides.getTotalSlides();
-        slideNo = (TextView)findViewById(R.id.slideNo);
 
         if(totalSlides != maxSlides){
             addDemoSlides();
@@ -65,8 +61,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
 
         currentSlideId = sharedP.getValueInt(context, "slideId");
+
         Slide firstSlide = holidaySlides.next(currentSlideId);
         updateUI(firstSlide);
+
         //difference: null check, more complicated on click listener
         if(imageView != null){
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -107,18 +105,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void showNextSlide(){
         watched.setValue(currentSlideId);
         currentSlideId++;
-        if(watched.hasChanged()){
-            slideNo.setText("");
-        }else{
-            slideNo.setText(currentSlideId);
-        }
         //difference: longer if
         if(currentSlideId == totalSlides){
             currentSlideId = 0;
         }
-        Slide nextSlide = holidaySlides.next(currentSlideId);
-        updateUI(nextSlide);
 
+        Slide nextSlide = holidaySlides.next(currentSlideId);
+        if(watched.hasChanged()){
+            TextView slideNo = (TextView) findViewById(R.id.slideNo);
+            slideNo.setText("Slide ID " + nextSlide.getId());
+            updateUI(nextSlide);
+        }
     }
 
     public void updateUI(Slide slide){
