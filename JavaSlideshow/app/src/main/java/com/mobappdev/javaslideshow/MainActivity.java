@@ -20,14 +20,12 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    //TODO: observable
     public int currentSlideId = 0;
     public MainActivity(int id) {
         this.currentSlideId = id;
     }
 
     public MainActivity(){
-
     }
 
     private Slideshow holidaySlides = Slideshow.getInstance();
@@ -50,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         watcher = new MainActivity(0);
         watched.addObserver(watcher);
 
-        //difference: i have to manually get the context for the shared prefs
         final Context context = getApplicationContext();
         totalSlides = holidaySlides.getTotalSlides();
 
@@ -64,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Slide firstSlide = holidaySlides.next(currentSlideId);
         updateUI(firstSlide);
 
-        //difference: null check, more complicated on click listener
         if(imageView != null){
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
