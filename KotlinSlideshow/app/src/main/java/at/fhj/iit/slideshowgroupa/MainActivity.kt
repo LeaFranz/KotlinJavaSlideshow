@@ -1,37 +1,17 @@
 package at.fhj.iit.slideshowgroupa
 
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate
 import at.fhj.iit.slideshowgroupa.model.Slide
 import at.fhj.iit.slideshowgroupa.service.Slideshow
 import java.time.LocalDate
 import kotlin.properties.Delegates
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Main
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
-    //SensorEventListener
-
     private val holidaySlides = Slideshow
     private var slideImgView: ImageView? = null
     private var totalSlides = 0
@@ -98,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         val timestamp = findViewById<TextView>(R.id.timestamp)
 
         slideTitle.text = slide.title
-        slideImgView = findViewById<ImageView>(R.id.slideImage)
+        slideImgView = findViewById(R.id.slideImage)
         val imgResId = resources.getIdentifier(
             slide.imageName,
             "drawable",
@@ -106,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         )
         slideImgView?.setImageResource(imgResId)
         description.text = slide.description
-        gpsText = findViewById<TextView>(R.id.gpsText)
+        gpsText = findViewById(R.id.gpsText)
         gpsText?.text = slide.GPS
         timestamp.text = (slide.timestamp).toString()
     }

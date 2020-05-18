@@ -7,35 +7,34 @@ object Slideshow {
     private var slides = mutableListOf<Slide>()
     var sortDirection = "asc"
 
-    fun addSlide(aNewSlide:Slide){
+    fun addSlide(aNewSlide: Slide) {
         slides.add(aNewSlide)
     }
 
-    override fun toString():String{
+    override fun toString(): String {
         val sortedSlides = slides.sortedBy { it.id }
         return sortedSlides.joinToString(" and ", "Slides: ")
     }
 
-   fun shuffle(){
+    fun shuffle() {
         slides.shuffle()
     }
 
-    fun next(counter:Int):Slide{
+    fun next(counter: Int): Slide {
         return slides[counter]
     }
 
-    fun getTotalSlides():Int{
+    fun getTotalSlides(): Int {
         return slides.size
     }
 
-
-    fun sort(){
-        if(sortDirection == "desc"){
+    fun sort() {
+        if (sortDirection == "desc") {
             slides.reverse()
             sortDirection = "asc"
         } else if (sortDirection === "asc") {
-            slides.sortWith(compareBy({it.timestamp}, {it.title}, {it.id}))
-            sortDirection="desc"
+            slides.sortWith(compareBy({ it.timestamp }, { it.title }, { it.id }))
+            sortDirection = "desc"
         }
     }
 

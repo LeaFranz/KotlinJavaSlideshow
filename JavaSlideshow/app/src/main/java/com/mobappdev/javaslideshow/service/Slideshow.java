@@ -15,18 +15,18 @@ public class Slideshow {
     public String sortDirection = "asc";
     private static Slideshow slideshow;
 
-    public static Slideshow getInstance(){
-        if(Slideshow.slideshow == null){
+    public static Slideshow getInstance() {
+        if (Slideshow.slideshow == null) {
             Slideshow.slideshow = new Slideshow();
         }
         return Slideshow.slideshow;
     }
 
-    public void addSlide(Slide newSlide){
+    public void addSlide(Slide newSlide) {
         slides.add(newSlide);
     }
 
-    public void shuffle(){
+    public void shuffle() {
         Collections.shuffle(slides);
     }
 
@@ -38,39 +38,34 @@ public class Slideshow {
         }
     }
 
-    public int getTotalSlides(){
+    public int getTotalSlides() {
         return slides.size();
     }
 
-    public void sort(){
-        if(sortDirection.equalsIgnoreCase("desc")){
+    public void sort() {
+        if (sortDirection.equalsIgnoreCase("desc")) {
             Collections.reverse(slides);
-            sortDirection="asc";
-        }else if(sortDirection.equalsIgnoreCase("asc")){
-            Collections.sort(slides, new SlideComperator());
+            sortDirection = "asc";
+        } else if (sortDirection.equalsIgnoreCase("asc")) {
+            Collections.sort(slides, new SlideComparator());
             sortDirection = "desc";
         }
     }
 
-    @Override
-    public String toString (){
-        return "";
-    }
-
-    public class SlideComperator implements Comparator<Slide>{
-    @Override
-    public int compare(Slide o1, Slide o2) {
-        int value1 = o1.getTimestamp().compareTo(o2.getTimestamp());
-        if (value1 == 0) {
-            int value2 = o1.getTitle().compareTo(o2.getTitle());
-            if (value2 == 0) {
-                return o1.getId() - o2.getId();
-            } else {
-                return value2;
+    public class SlideComparator implements Comparator<Slide> {
+        @Override
+        public int compare(Slide o1, Slide o2) {
+            int value1 = o1.getTimestamp().compareTo(o2.getTimestamp());
+            if (value1 == 0) {
+                int value2 = o1.getTitle().compareTo(o2.getTitle());
+                if (value2 == 0) {
+                    return o1.getId() - o2.getId();
+                } else {
+                    return value2;
+                }
             }
+            return value1;
         }
-        return value1;
     }
-}
 
 }

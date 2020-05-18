@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPreference(context: Context) {
-    private val prefName = "SlideshowPref" //preference file
+    private val prefName = "SlideshowPref"
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
 

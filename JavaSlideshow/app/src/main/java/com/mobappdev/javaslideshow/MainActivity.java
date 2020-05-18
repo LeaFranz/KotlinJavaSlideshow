@@ -3,7 +3,6 @@ package com.mobappdev.javaslideshow;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         final Context context = getApplicationContext();
         totalSlides = holidaySlides.getTotalSlides();
 
-        if(totalSlides != maxSlides){
+        if (totalSlides != maxSlides) {
             addDemoSlides();
             totalSlides = holidaySlides.getTotalSlides();
         }
@@ -91,22 +90,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 holidaySlides.sort();
                 Slide slide = holidaySlides.next(currentSlideId);
                 updateUI(slide);
-                if(holidaySlides.sortDirection.equals("asc")){
+                if (holidaySlides.sortDirection.equals("asc")) {
                     sortButton.setText("SORT ASC");
                 } else {
                     sortButton.setText("SORT DESC");
                 }
             }
         });
-
-
     }
 
     public void showNextSlide(){
         watched.setValue(currentSlideId);
         currentSlideId++;
-        //difference: longer if
-        if(currentSlideId == totalSlides){
+        if (currentSlideId == totalSlides) {
             currentSlideId = 0;
         }
 
@@ -118,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    public void updateUI(Slide slide){
+    public void updateUI(Slide slide) {
         TextView title = (TextView) findViewById(R.id.slideTitle);
         TextView description = (TextView) findViewById(R.id.description);
         TextView timestamp = (TextView) findViewById(R.id.timestamp);
@@ -126,21 +122,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
         int imgResId = getResources().getIdentifier(slide.getImageName(), "drawable", getPackageName());
         imageView = (ImageView) findViewById(R.id.slideImage);
 
-        //difference: using getter!
         title.setText(slide.getTitle());
         description.setText(slide.getDescription());
-        timestamp.setText(slide.getTimestamp()+"");
-        //difference check for null
-        if(gps != null){
+        timestamp.setText(slide.getTimestamp() + "");
+        if (gps != null) {
             gps.setText(slide.getGps());
         }
-        if(imageView != null){
+        if (imageView != null) {
             imageView.setImageResource(imgResId);
         }
     }
 
-    public void addDemoSlides(){
-        //difference: create with constructor
+    public void addDemoSlides() {
         holidaySlides.addSlide(new Slide(1,
                 "More Coffee!!",
                 "coffee",
@@ -165,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 "Hawaii",
                 LocalDate.parse("2019-07-25"),
                 "This sand was very hot."));
-
     }
 
 
